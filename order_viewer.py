@@ -37,7 +37,7 @@ order_statuses = ["Not Processed", "Preparing Order", "Send for Shipping", "Ship
 # Page Setup
 # -----------------------------
 st.set_page_config(page_title="📚 STEM Orders", layout="wide")
-st.title("📚 STEM Explorer Order Dashboard")
+st.title("📚 STEM Explorasi Order Dashboard")
 
 # -----------------------------
 # Filters
