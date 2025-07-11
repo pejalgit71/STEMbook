@@ -52,7 +52,7 @@ DELIVERY_COST = 10
 st.set_page_config(page_title="Buy STEM Explorer", layout="centered")
 
 st.title("📘 STEM Explorer Book Order")
-st.image("STEMexplorer.jpg", width=300)
+st.image("STEMexplorer.jpg", width=400)
 
 st.markdown("""
 ### About the Book
