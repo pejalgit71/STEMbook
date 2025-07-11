@@ -19,7 +19,7 @@ def get_gsheet_client():
     return gspread.authorize(creds)
 
 gc = get_gsheet_client()
-sheet = gc.open("STEM Explorer Orders").sheet1
+sheet = gc.open("STEM Explorasi Orders").sheet1
 
 # --------------------------------
 # Google Drive Auth (googleapiclient)
