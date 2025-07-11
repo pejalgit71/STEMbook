@@ -35,7 +35,7 @@ drive_service = get_drive_service()
 # --------------------------------
 # Google Drive Folder ID
 # --------------------------------
-FOLDER_ID = '19Vr81hUu-oEOtH11vWe-EZGGtJXNszPm'
+FOLDER_ID = st.secrets["folder_id"]
 
 
 # -----------------------------
