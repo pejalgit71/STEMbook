@@ -1,17 +1,19 @@
 import streamlit as st
 import pandas as pd
 import gspread
-from oauth2client.service_account import ServiceAccountCredentials
+from google.oauth2.service_account import Credentials
 from datetime import datetime
 
 # -----------------------------
-# Google Sheets Auth
+# Google Sheets Auth (via st.secrets)
 # -----------------------------
-SCOPE = ["https://spreadsheets.google.com/feeds", 'https://www.googleapis.com/auth/drive']
-CREDS_FILE = "ave2025-fbe390c33c3d.json"
+def get_gsheet_client():
+    scopes = ["https://spreadsheets.google.com/feeds", "https://www.googleapis.com/auth/drive"]
+    creds_dict = st.secrets["gcp_service_account"]
+    credentials = Credentials.from_service_account_info(creds_dict, scopes=scopes)
+    return gspread.authorize(credentials)
 
-credentials = ServiceAccountCredentials.from_json_keyfile_name(CREDS_FILE, SCOPE)
-gc = gspread.authorize(credentials)
+gc = get_gsheet_client()
 sheet = gc.open("STEM Explorer Orders").sheet1
 
 # -----------------------------
