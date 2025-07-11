@@ -19,7 +19,7 @@ def get_gsheet_client():
     return gspread.authorize(creds)
 
 gc = get_gsheet_client()
-sheet = gc.open("STEM Explorasi Orders").sheet1
+sheet = gc.open("STEM Explorer Orders").sheet1
 
 # --------------------------------
 # Google Drive Auth (googleapiclient)
@@ -51,7 +51,7 @@ DELIVERY_COST = 10
 # -----------------------------
 st.set_page_config(page_title="Buy STEM Explorer", layout="centered")
 
-st.title("📘 STEM Explorer Book Order")
+st.title("📘 STEM Explorasi Book Order")
 st.image("STEMexplorer.jpg", width=400)
 
 st.markdown("""
