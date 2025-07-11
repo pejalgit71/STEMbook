@@ -91,13 +91,17 @@ for i, row in filtered_df.iterrows():
     col_data[4].write(f"RM {row['Total Cost']}")
     col_data[5].markdown(f"[📎 Receipt]({row['Receipt Link']})")
 
-    current_status = row["Order Status"]
+    current_status = row.get("Order Status", "Not Processed")
+    # If current_status not in predefined list, default to first option
+    status_index = order_statuses.index(current_status) if current_status in order_statuses else 0
+    
     new_status = col_data[6].selectbox(
         "Status",
         order_statuses,
-        index=order_statuses.index(current_status),
+        index=status_index,
         key=f"status_{i}"
     )
+
 
     if new_status != current_status:
         if st.button("✅ Save", key=f"save_{i}"):
