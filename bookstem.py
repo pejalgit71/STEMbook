@@ -31,8 +31,6 @@ def get_gsheet_client():
 gc = get_gsheet_client()
 sheet = gc.open("STEM Explorer Orders").sheet1
 
-sheet = gc.open("STEM Explorer Orders").sheet1
-
 # Google Drive setup
 drive_service = build('drive', 'v3', credentials=credentials)
 
