@@ -107,7 +107,7 @@ for i, row in filtered_df.iterrows():
         if st.button("✅ Save", key=f"save_{i}"):
             sheet.update_cell(i + 2, df.columns.get_loc("Order Status") + 1, new_status)
             st.success(f"Status updated for {row['Name']} to {new_status}")
-            st.experimental_rerun()
+            st.rerun()
 
 # -----------------------------
 # Summary + CSV Download
