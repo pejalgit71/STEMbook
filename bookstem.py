@@ -11,12 +11,26 @@ import json
 # --------------------------------
 # Google Sheets & Drive Setup
 # --------------------------------
-SCOPES = ['https://www.googleapis.com/auth/drive', 'https://www.googleapis.com/auth/spreadsheets']
-SERVICE_ACCOUNT_INFO = json.loads(os.environ["GCP_SERVICE_ACCOUNT"])
-credentials = Credentials.from_service_account_info(SERVICE_ACCOUNT_INFO, scopes=SCOPES)
-gc = gspread.authorize(credentials)
+
+SHEET_NAME = "STEM Certification Data"
+
+# === Google Sheets Setup ===
+import streamlit as st
+import gspread
+from oauth2client.service_account import ServiceAccountCredentials
+
+# Google Sheets Client from Streamlit Secrets
+def get_gsheet_client():
+    scope = ["https://spreadsheets.google.com/feeds", "https://www.googleapis.com/auth/drive"]
+    creds_dict = st.secrets["gcp_service_account"]
+    creds = ServiceAccountCredentials.from_json_keyfile_dict(dict(creds_dict), scope)
+    return gspread.authorize(creds)
+
 
 # Google Sheet setup
+gc = get_gsheet_client()
+sheet = gc.open("STEM Explorer Orders").sheet1
+
 sheet = gc.open("STEM Explorer Orders").sheet1
 
 # Google Drive setup
