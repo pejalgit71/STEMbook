@@ -1,35 +1,37 @@
 import streamlit as st
-from datetime import datetime
 import gspread
+import os
+import json
+from datetime import datetime
+import io
+from oauth2client.service_account import ServiceAccountCredentials
 from google.oauth2.service_account import Credentials
 from googleapiclient.discovery import build
 from googleapiclient.http import MediaIoBaseUpload
-import io
-import os
-import json
 
 # --------------------------------
-# Google Sheets & Drive Setup
+# Google Sheets Auth (gspread)
 # --------------------------------
-
-SHEET_NAME = "STEM Certification Data"
-
-# === Google Sheets Setup ===
-import streamlit as st
-import gspread
-from oauth2client.service_account import ServiceAccountCredentials
-
-# Google Sheets Client from Streamlit Secrets
 def get_gsheet_client():
     scope = ["https://spreadsheets.google.com/feeds", "https://www.googleapis.com/auth/drive"]
     creds_dict = st.secrets["gcp_service_account"]
     creds = ServiceAccountCredentials.from_json_keyfile_dict(dict(creds_dict), scope)
     return gspread.authorize(creds)
 
-
-# Google Sheet setup
 gc = get_gsheet_client()
 sheet = gc.open("STEM Explorer Orders").sheet1
+
+# --------------------------------
+# Google Drive Auth (googleapiclient)
+# --------------------------------
+def get_drive_service():
+    scopes = ['https://www.googleapis.com/auth/drive']
+    creds_dict = dict(st.secrets["gcp_service_account"])
+    credentials = Credentials.from_service_account_info(creds_dict, scopes=scopes)
+    return build('drive', 'v3', credentials=credentials)
+
+drive_service = get_drive_service()
+
 
 # Google Drive setup
 drive_service = build('drive', 'v3', credentials=credentials)
