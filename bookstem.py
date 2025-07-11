@@ -1,19 +1,19 @@
 import streamlit as st
 from datetime import datetime
 import gspread
-from oauth2client.service_account import ServiceAccountCredentials
 from google.oauth2.service_account import Credentials
 from googleapiclient.discovery import build
 from googleapiclient.http import MediaIoBaseUpload
 import io
+import os
+import json
 
 # --------------------------------
 # Google Sheets & Drive Setup
 # --------------------------------
 SCOPES = ['https://www.googleapis.com/auth/drive', 'https://www.googleapis.com/auth/spreadsheets']
-SERVICE_ACCOUNT_FILE = 'ave2025-fbe390c33c3d.json'
-
-credentials = Credentials.from_service_account_file(SERVICE_ACCOUNT_FILE, scopes=SCOPES)
+SERVICE_ACCOUNT_INFO = json.loads(os.environ["GCP_SERVICE_ACCOUNT"])
+credentials = Credentials.from_service_account_info(SERVICE_ACCOUNT_INFO, scopes=SCOPES)
 gc = gspread.authorize(credentials)
 
 # Google Sheet setup
