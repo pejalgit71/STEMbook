@@ -100,14 +100,21 @@ with st.form("order_form"):
                 'name': filename,
                 'parents': [FOLDER_ID]
             }
-            uploaded_file = drive_service.files().create(
-                body=file_metadata,
-                media_body=media,
-                fields='id'
-            ).execute()
-
-            file_id = uploaded_file.get('id')
-            file_link = f"https://drive.google.com/file/d/{file_id}/view?usp=sharing"
+            try:
+                uploaded_file = drive_service.files().create(
+                    body=file_metadata,
+                    media_body=media,
+                    fields='id'
+                ).execute()
+            
+                file_id = uploaded_file.get('id')
+                file_link = f"https://drive.google.com/file/d/{file_id}/view?usp=sharing"
+            
+            except Exception as e:
+                
+                st.error("❌ Failed to upload file to Google Drive. Please check your permissions, folder ID, and file size.")
+                st.exception(e)  # This will display the full traceback and actual error message in Streamlit
+                st.stop()
 
             # Save to Google Sheet
             sheet.append_row([timestamp, name, phone, email, address, option, quantity, total, file_link])
