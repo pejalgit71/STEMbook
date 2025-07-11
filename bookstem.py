@@ -32,11 +32,9 @@ def get_drive_service():
 
 drive_service = get_drive_service()
 
-
-# # Google Drive setup
-# drive_service = build('drive', 'v3', credentials=credentials)
-
-# Replace with your actual Google Drive folder ID
+# --------------------------------
+# Google Drive Folder ID
+# --------------------------------
 FOLDER_ID = '19Vr81hUu-oEOtH11vWe-EZGGtJXNszPm'
 
 # -----------------------------
@@ -60,8 +58,8 @@ STEM Explorer is a hands-on educational book with real-world STEM projects.
 
 Available options:
 - 📖 **Book Only** – RM 85  
-- 📖➕🔧 **Book + Arduino Kit** – RM 145 
-🛵 *Delivery: RM 10 added automatically*
+- 📖➕🔧 **Book + Arduino Kit** – RM 145  
+🛵 *Delivery: RM 10 added automatically per order*
 """)
 
 st.image("QR.jpg", caption="Scan to make payment", width=250)
@@ -77,6 +75,7 @@ with st.form("order_form"):
     email = st.text_input("Email")
     address = st.text_area("Postal Address")
     option = st.selectbox("Select your option", ["Book Only", "Book + Arduino Kit"])
+    quantity = st.number_input("Quantity", min_value=1, max_value=100, value=1)
     uploaded_receipt = st.file_uploader("Upload Payment Receipt", type=["jpg", "jpeg", "png", "pdf"])
 
     submitted = st.form_submit_button("Submit Order")
@@ -87,7 +86,7 @@ with st.form("order_form"):
         else:
             # Calculate cost
             base_price = BOOK_PRICE + (ARDUINO_KIT_PRICE if option == "Book + Arduino Kit" else 0)
-            total = base_price + DELIVERY_COST
+            total = (base_price * quantity) + DELIVERY_COST
             timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
             safe_name = name.replace(" ", "_")
             file_date = datetime.now().strftime("%Y%m%d_%H%M%S")
@@ -110,7 +109,7 @@ with st.form("order_form"):
             file_link = f"https://drive.google.com/file/d/{file_id}/view?usp=sharing"
 
             # Save to Google Sheet
-            sheet.append_row([timestamp, name, phone, email, address, option, total, file_link])
+            sheet.append_row([timestamp, name, phone, email, address, option, quantity, total, file_link])
 
-            st.success(f"✅ Order submitted! Total: RM {total}")
+            st.success(f"✅ Order submitted! Quantity: {quantity}, Total: RM {total}")
             st.info("Your receipt has been uploaded and linked to your order. We'll verify it and contact you soon.")
