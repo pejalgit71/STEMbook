@@ -12,7 +12,7 @@ def get_gsheet_client():
     creds_dict = st.secrets["gcp_service_account"]
     credentials = Credentials.from_service_account_info(creds_dict, scopes=scopes)
     return gspread.authorize(credentials)
-
+@st.cache_data(ttl=60)
 gc = get_gsheet_client()
 sheet = gc.open("STEM Explorer Orders").sheet1
 
@@ -29,7 +29,7 @@ def load_data():
         if "Order Status" not in df.columns:
             df["Order Status"] = "Not Processed"
     return df
-
+@st.cache_data(ttl=60)
 df = load_data()
 order_statuses = ["Not Processed", "Preparing Order", "Send for Shipping", "Shipped"]
 
