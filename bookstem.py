@@ -17,7 +17,8 @@ def get_gsheet_client():
     creds_dict = st.secrets["gcp_service_account"]
     creds = ServiceAccountCredentials.from_json_keyfile_dict(dict(creds_dict), scope)
     return gspread.authorize(creds)
-
+    
+@st.cache_data(ttl=60)
 gc = get_gsheet_client()
 sheet = gc.open("STEM Explorer Orders").sheet1
 
@@ -29,7 +30,8 @@ def get_drive_service():
     creds_dict = dict(st.secrets["gcp_service_account"])
     credentials = Credentials.from_service_account_info(creds_dict, scopes=scopes)
     return build('drive', 'v3', credentials=credentials)
-
+    
+@st.cache_data(ttl=60)
 drive_service = get_drive_service()
 
 # --------------------------------
